@@ -44,7 +44,9 @@ sudo apt install -y \
     vlc \
     qbittorrent \
     filezilla \
-    shotwell
+    shotwell \
+    chromium \
+    firefox-esr 
 
 # Clean up
 echo "Cleaning up..."
