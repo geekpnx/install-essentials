@@ -120,7 +120,9 @@ sudo apt install -y \
     chromium \
     firefox-esr \
     libreoffice \
-    btop & spinner
+    btop \
+    tigervnc-standalone-server \
+    tigervnc-common & spinner
 success "All packages installed successfully!"
 
 # Clean up
