@@ -120,7 +120,11 @@ sudo apt install -y \
     chromium \
     firefox-esr \
     libreoffice \
-    btop \
+    htop \
+    gnome-mahjongg \
+    gnome-chess \
+    deepin-calculator \
+    nmap \
     tigervnc-standalone-server \
     tigervnc-common & spinner
 success "All packages installed successfully!"
