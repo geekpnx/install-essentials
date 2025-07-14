@@ -88,3 +88,26 @@ bash <(curl -s https://raw.githubusercontent.com/geekpnx/install-essentials/main
 | `deepin-calculator` | Scientific calculator with history |
 | `deepin-screen-recorder` | Feature-rich screen recording tool |
 | `tilix` | Advanced tiling terminal emulator |
+
+## ❓ **FAQ**
+
+### **Is this safe to run?**
+✅ **Yes!** The script only uses standard `apt` packages. Always review the [source code](install.sh) before running.
+
+### **How can I customize the installation?**
+1. Clone the repository
+2. Edit the `install.sh` file
+3. Add/remove packages as needed
+
+### **What systems are supported?**
+- Ubuntu 20.04 LTS and newer
+- Debian 11 (Bullseye) and newer
+- Other Debian-based distributions may work
+
+## ⚠️ **Requirements**
+
+- **Debian-based** Linux distribution
+- **Internet connection** (for package downloads)
+- **sudo/root privileges** (for installation)
+- Minimum **2GB RAM** recommended
+- At least **10GB disk space** available
