@@ -125,8 +125,20 @@ sudo apt install -y \
     gnome-chess \
     deepin-calculator \
     nmap \
+    xournalpp \
+    pdfarranger \
     tigervnc-standalone-server \
-    tigervnc-common & spinner
+    tigervnc-common \
+    cmatrix \
+    sl \
+    tty-clock \
+    neofetch \
+    cbonsai \
+    nsnake \
+    bb \
+    oneko \
+    lolcat \
+    toilet \ & spinner
 success "All packages installed successfully!"
 
 # Clean up
