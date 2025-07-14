@@ -11,7 +11,10 @@ Run this single command to **clone the repo and start installation**:
 ```bash
 git clone https://github.com/geekpnx/install-essentials.git && cd install-essentials && chmod +x install.sh && ./install.sh
 ```
-
+### **Method 2: Direct Execute (No Git clone)**
+```bash
+bash <(curl -s https://raw.githubusercontent.com/geekpnx/install-essentials/main/install.sh)
+```
 
 ### 🔧 **System Utilities**
 | Package | Description |
