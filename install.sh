@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# Installation script for essential packages
+# --------------------------------------------------------------------------
+# Linux Apps Installer v1.1
+# Improved with package verification, error handling, and missing package detection
 # Usage: ./install.sh
+# --------------------------------------------------------------------------
 
-# Exit immediately if a command exits with non-zero status
-set -e
+# Exit on errors, but allow continuation for package failures
+set -eo pipefail
 
 # Colors and formatting
 RED='\033[0;31m'
@@ -17,42 +20,46 @@ BOLD='\033[1m'
 UNDERLINE='\033[4m'
 NC='\033[0m' # No Color
 
-# Progress indicator
-spinner() {
-    local pid=$!
-    local delay=0.1
-    local spinstr='|/-\'
-    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
-        local temp=${spinstr#?}
-        printf " [%c]  " "$spinstr"
-        local spinstr=$temp${spinstr%"$temp"}
-        sleep $delay
-        printf "\b\b\b\b\b\b"
-    done
-    printf "    \b\b\b\b"
-}
+# Track failed packages
+FAILED_PKGS=()
 
 # Function to print section headers
 section() {
-    echo -e "\n${MAGENTA}${BOLD}===== $1 =====${NC}\n"
+    echo -e "\n${MAGENTA}${BOLD}===== $1 =====${NC}"
 }
 
-# Function to print status messages
-status() {
-    echo -e "${YELLOW}${BOLD}[~]${NC} ${YELLOW}$1${NC}"
+# Status messages
+status() { echo -e "${YELLOW}${BOLD}[~]${NC} ${YELLOW}$1${NC}"; }
+success() { echo -e "${GREEN}${BOLD}[✓]${NC} ${GREEN}$1${NC}"; }
+error() { echo -e "${RED}${BOLD}[X]${NC} ${RED}$1${NC}"; }
+info() { echo -e "${BLUE}${BOLD}[i]${NC} ${BLUE}$1${NC}"; }
+
+# Check if a package exists in repositories
+pkg_exists() {
+    apt-cache show "$1" &>/dev/null
 }
 
-# Function to print success messages
-success() {
-    echo -e "${GREEN}${BOLD}[✓]${NC} ${GREEN}$1${NC}"
+# Install a package with error handling
+install_pkg() {
+    local pkg="$1"
+    if pkg_exists "$pkg"; then
+        status "Installing $pkg..."
+        if sudo apt install -y "$pkg" > /dev/null; then
+            success "$pkg installed successfully!"
+            return 0
+        else
+            error "Failed to install $pkg (apt error)"
+            FAILED_PKGS+=("$pkg")
+            return 1
+        fi
+    else
+        error "Package not found: $pkg"
+        FAILED_PKGS+=("$pkg")
+        return 1
+    fi
 }
 
-# Function to print info messages
-info() {
-    echo -e "${BLUE}${BOLD}[i]${NC} ${BLUE}$1${NC}"
-}
-
-# Print welcome message
+# Print header
 echo -e "${CYAN}${BOLD}"
 echo "   ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗     █████╗ ██████╗ ██████╗ ███████╗"
 echo "   ██║     ██║████╗  ██║██║   ██║╚██╗██╔╝    ██╔══██╗██╔══██╗██╔══██╗██╔════╝"
@@ -61,24 +68,24 @@ echo "   ██║     ██║██║╚██╗██║██║   ██
 echo "   ███████╗██║██║ ╚████║╚██████╔╝██╔╝ ██╗    ██║  ██║██║     ██║     ███████║"
 echo "   ╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝    ╚═╝  ╚═╝╚═╝     ╚═╝     ╚══════╝"
 echo "   -------------------------------------------------------------------------"
-echo "                          Linux Apps Installer v1.0                         "
+echo "                     Linux Apps Installer v1.1 (Improved)                    "
 echo -e "${NC}"
 echo -e "${BOLD}Essential Packages Installation Script${NC}"
-echo -e "${UNDERLINE}This script will update, upgrade, and install essential packages${NC}\n"
+echo -e "${UNDERLINE}Now with missing package detection and better error handling${NC}\n"
 
 # Update package lists
 section "System Update"
 status "Updating package lists..."
-sudo apt update -qq & spinner
-success "Package lists updated successfully!"
+sudo apt update -qq
+success "Package lists updated!"
 
 # Upgrade installed packages
 section "System Upgrade"
-status "Upgrading installed packages (this may take a while)..."
-sudo apt upgrade -y -qq & spinner
-success "System upgraded successfully!"
+status "Upgrading installed packages..."
+sudo apt upgrade -y -qq
+success "System upgraded!"
 
-# Install essential packages
+# Package installation
 section "Package Installation"
 info "The following packages will be installed:"
 echo -e "${CYAN}"
@@ -90,56 +97,50 @@ echo "  - Office: libreoffice, evince, atril"
 echo "  - Utilities: nano, micro, mousepad, cups, btop"
 echo -e "${NC}"
 
-status "Installing essential packages (this will take some time)..."
-sudo apt install -y \
-    font-manager \
-    tasksel \
-    openssh-server \
-    nano \
-    ufw \
-    deepin-screen-recorder \
-    smplayer \
-    tilix \
-    clementine \
-    mousepad \
-    gimp \
-    inkscape \
-    darktable \
-    audacity \
-    cups \
-    atril \
-    remmina \
-    wget \
-    git \
-    curl \
-    pcmanfm \
-    rhythmbox \
-    evince \
-    micro \
-    vlc \
-    qbittorrent \
-    filezilla \
-    shotwell \
-    chromium \
-    firefox-esr \
-    libreoffice \
-    htop \
-    gnome-mahjongg \
-    gnome-chess \
-    deepin-calculator \
-    nmap \
-    tigervnc-standalone-server \
-    tigervnc-common \ & spinner
+# List of packages to install
+PKGS=(
+    # System Tools
+    font-manager tasksel ufw tilix pcmanfm
+    # Network
+    openssh-server wget git curl remmina filezilla
+    # Media
+    smplayer clementine rhythmbox vlc qbittorrent
+    # Graphics
+    gimp inkscape darktable shotwell
+    # Office
+    libreoffice evince atril
+    # Utilities
+    nano micro mousepad cups btop
+    # Optional/Game
+    cmatrix sl neofetch lolcat toilet
+    # Deepin (may fail if repo not added)
+    deepin-screen-recorder deepin-calculator
+)
 
-success "All packages installed successfully!"
+# Install packages one by one
+for pkg in "${PKGS[@]}"; do
+    install_pkg "$pkg" || continue
+done
+
+# Post-install summary
+section "Installation Summary"
+if [ ${#FAILED_PKGS[@]} -eq 0 ]; then
+    success "All packages installed successfully!"
+else
+    error "The following packages failed to install:"
+    for failed in "${FAILED_PKGS[@]}"; do
+        echo -e "  - ${RED}$failed${NC}"
+    done
+    echo -e "\n${YELLOW}Note: Some packages may require additional repositories (e.g., Deepin).${NC}"
+fi
 
 # Clean up
 section "System Cleanup"
 status "Removing unnecessary packages..."
-sudo apt autoremove -y -qq & spinner
-success "System cleanup completed!"
+sudo apt autoremove -y -qq
+success "Cleanup completed!"
 
-# Completion message
+# Final message
 echo -e "\n${GREEN}${BOLD}"
 echo "   ███████╗██╗   ██╗ ██████╗ ██████╗███████╗███████╗███████╗"
 echo "   ██╔════╝██║   ██║██╔════╝██╔════╝██╔════╝██╔════╝██╔════╝"
@@ -147,8 +148,9 @@ echo "   ███████╗██║   ██║██║     ██║   
 echo "   ╚════██║██║   ██║██║     ██║     ██╔══╝  ╚════██║╚════██║"
 echo "   ███████║╚██████╔╝╚██████╗╚██████╗███████╗███████║███████║"
 echo "   ╚══════╝ ╚═════╝  ╚═════╝ ╚═════╝╚══════╝╚══════╝╚══════╝"
-echo "   ---------------------------------------------------------"
-echo "              All apps installed successfully!"
 echo -e "${NC}"
-echo -e "${BOLD}Installation complete!${NC}"
-echo -e "${YELLOW}Please reboot your system for all changes to take effect.${NC}"
+echo -e "${BOLD}Script execution complete!${NC}"
+if [ ${#FAILED_PKGS[@]} -gt 0 ]; then
+    echo -e "${YELLOW}Some packages failed to install. Check above for details.${NC}"
+fi
+echo -e "${YELLOW}Consider rebooting your system for all changes to take effect.${NC}"
