@@ -131,17 +131,8 @@ sudo apt install -y \
     xournalpp \
     pdfarranger \
     tigervnc-standalone-server \
-    tigervnc-common \
-    cmatrix \
-    sl \
-    tty-clock \
-    neofetch \
-    cbonsai \
-    nsnake \
-    bb \
-    oneko \
-    lolcat \
-    toilet \ & spinner
+    tigervnc-common \ & spinner
+    
 success "All packages installed successfully!"
 
 # Clean up
