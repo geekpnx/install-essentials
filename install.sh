@@ -128,11 +128,9 @@ sudo apt install -y \
     gnome-chess \
     deepin-calculator \
     nmap \
-    xournalpp \
-    pdfarranger \
     tigervnc-standalone-server \
     tigervnc-common \ & spinner
-    
+
 success "All packages installed successfully!"
 
 # Clean up
