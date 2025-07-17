@@ -89,7 +89,7 @@ success "System upgraded!"
 section "Package Installation"
 info "The following packages will be installed:"
 echo -e "${CYAN}"
-echo "  - System Tools: font-manager, tasksel, ufw, tilix, pcmanfm"
+echo "  - System Tools: font-manager, ufw, tilix, pcmanfm"
 echo "  - Network: openssh-server, wget, git, curl, remmina, filezilla"
 echo "  - Media: smplayer, clementine, rhythmbox, vlc, qbittorrent"
 echo "  - Graphics: gimp, inkscape, darktable, shotwell"
@@ -100,19 +100,21 @@ echo -e "${NC}"
 # List of packages to install
 PKGS=(
     # System Tools
-    font-manager tasksel ufw tilix pcmanfm
+    font-manager ufw tilix pcmanfm
     # Network
-    openssh-server wget git curl remmina filezilla
+    openssh-server wget git curl remmina filezilla nmap
+    # Browser
+    chromium firefox-esr
     # Media
     smplayer clementine rhythmbox vlc qbittorrent
     # Graphics
     gimp inkscape darktable shotwell
     # Office
-    libreoffice evince atril
+    libreoffice evince atril xournalpp pdfarranger
     # Utilities
     nano micro mousepad cups btop
     # Optional/Game
-    cmatrix sl neofetch lolcat toilet
+    cmatrix sl neofetch lolcat toilet gnome-mahjongg gnome-chess nsnake cbonsai tty-clock oneko
     # Deepin (may fail if repo not added)
     deepin-screen-recorder deepin-calculator
 )
