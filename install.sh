@@ -102,17 +102,17 @@ PKGS=(
     # System Tools
     font-manager ufw tilix pcmanfm
     # Network
-    openssh-server wget git curl remmina filezilla nmap
+    openssh-server wget git curl remmina filezilla nmap tigervnc-standalone-server tigervnc-common
     # Browser
     chromium firefox-esr
     # Media
-    smplayer clementine rhythmbox vlc qbittorrent
+    smplayer clementine rhythmbox vlc qbittorrent audacity
     # Graphics
     gimp inkscape darktable shotwell
     # Office
     libreoffice evince atril xournalpp pdfarranger
     # Utilities
-    nano micro mousepad cups btop
+    nano micro mousepad cups btop htop
     # Optional/Game
     cmatrix sl neofetch lolcat toilet gnome-mahjongg gnome-chess nsnake cbonsai tty-clock oneko
     # Deepin (may fail if repo not added)

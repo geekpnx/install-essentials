@@ -20,7 +20,6 @@ bash <(curl -s https://raw.githubusercontent.com/geekpnx/install-essentials/main
 | Package | Description |
 |---------|-------------|
 | `font-manager` | GUI for installing and managing fonts |
-| `tasksel` | Tool for selecting and installing software bundles |
 | `openssh-server` | Secure Shell server for remote access |
 | `nano` | Simple command-line text editor |
 | `ufw` | Uncomplicated Firewall configuration tool |
@@ -76,7 +75,7 @@ bash <(curl -s https://raw.githubusercontent.com/geekpnx/install-essentials/main
 | `neofetch` | System information display with ASCII art |
 | `cbonsai` | Animated bonsai tree in terminal |
 | `nsnake` | Classic snake game in terminal |
-| `bb` | ASCII art demo with music support |
+| `tty-clock ` | ASCII art clock|
 | `oneko` | Cursor that turns into a chasing cat |
 | `lolcat` | Rainbow color output for terminal |
 | `toilet` | ASCII text display with various fonts |
